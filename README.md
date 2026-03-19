@@ -1,6 +1,6 @@
 # Google Colab MCP 
 
-This folder is a small sandbox to understand and test the new Google Colab MCP server, plus a playful “real” notebook project (downloading SEC 10-Q filings) to see how well an agent can drive Colab end-to-end.
+This folder is a small sandbox to understand and test the new Google Colab MCP server, plus a playful “real” notebook project to see how well an agent can drive Colab end-to-end.
 
 ## What is the “Colab MCP” (Google)?
 
@@ -43,52 +43,46 @@ Prerequisites (as described by the upstream project/blog):
 
 ## The “small project test” notebook
 
-`colabMcp/Financial_Report_Analyzer.ipynb` is the main fun test project (it already produces charts/dashboards and saves output files).
+`colabMcp/Financial_Report_Analyzer.ipynb` is the fun test project (the one that already produces visible “results” artifacts in `/content/`).
 
 ### What it does
 
-It fetches and analyzes **SEC EDGAR 10-Q quarterly financial reports** and then visualizes the results.
+It fetches and analyzes **SEC EDGAR 10-Q financial data** end-to-end by:
 
-High-level flow:
+1. Searching for a company (by name or ticker) to get its CIK
+2. Fetching the most recent 10-Q filing history
+3. Pulling structured financial metrics from SEC `companyfacts` (XBRL)
+4. Building tables + multiple trend/risk charts
+5. Optionally running a narrative analysis using a local LLM via **Ollama**
 
-1. Searches for a company (by name or ticker) to get the required `CIK`
-2. Retrieves the company’s most recent 10-Qs
-3. Extracts key financial metrics (revenue, net income, assets, etc.)
-4. Builds trend charts
-5. Produces a dark-themed, 4-panel dashboard (radar + scores + risk landscape + outlook)
+### Results it saves (Colab)
 
-### Outputs it saves (so you can “see results”)
+The notebook writes its outputs into:
 
-Running the notebook writes files into the Colab `/content` folder, including:
-
-```text
-/content/{TICKER}_10Q_financial_data.csv
-/content/{TICKER}_ai_dashboard.png
-/content/comparison_dashboard.png
-```
+- `/content/{TICKER}_10Q_financial_data.csv`
+- `/content/{ticker}_ai_dashboard.png` (per-company AI dashboard)
+- `/content/comparison_dashboard.png` (multi-company comparison dashboard)
 
 ### How to run it (in Colab)
 
 1. Open `Financial_Report_Analyzer.ipynb` in Google Colab
-2. Edit the company inputs in the notebook (for example `SEARCH_QUERY` and the selected company index)
-3. Make sure the SEC `User-Agent` header is set to your real name/email (there is a placeholder in the code)
-4. Run cells from top to bottom
+2. Ensure the SEC `User-Agent` header includes your contact info (the notebook includes a placeholder you should replace if needed)
+3. Run cells from top to bottom
+
+Because the SEC requires a descriptive `User-Agent`, leaving any placeholder can lead to blocks or rate limiting.
 
 ## Packages used (quick list)
 
 - `uv` + `git` + `python` (for running the MCP server)
 - Notebook deps:
-  - `edgartools`
   - `requests`
-  - `numpy`
+  - `pandas`
   - `matplotlib`
+  - `plotly`
+  - plus Ollama install/setup steps (inside the notebook)
 
 ## Why this exists 
 
-This is intentionally for fun: it’s a practical way to verify the Colab MCP server can drive a non-trivial notebook workflow—install dependencies, execute Python, and produce real artifacts—without manual copy/paste between local tooling and Colab.
-
-## Optional: bulk downloader
-
-If you also want to “collect raw filings” first, see `colabMcp/SEC_EDGAR_10Q_Downloader.ipynb`, which downloads 10-Q HTML + `metadata.json` into a structured folder under `/content/data/tickers/...`.
+This is intentionally for fun: it’s a practical way to verify the Colab MCP server can drive a non-trivial notebook workflow—install dependencies, execute Python, and produce real artifacts—without manual copy/paste between local tooling and Colab. 
 
 ### All Rights Reserved - TheKingHippopotamus - 2026 
