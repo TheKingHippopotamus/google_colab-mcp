@@ -41,9 +41,9 @@ Prerequisites (as described by the upstream project/blog):
 - `git`
 - `python`
 
-## The “small project test” notebook
+## notebook
+[Financial_Report_Analyzer.ipynb](/Financial_Report_Analyzer.ipynb)
 
-`colabMcp/Financial_Report_Analyzer.ipynb` is the fun test project (the one that already produces visible “results” artifacts in `/content/`).
 
 ### What it does
 
