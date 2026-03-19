@@ -1,6 +1,6 @@
 # Google Colab MCP 
 
-This folder is a small sandbox to understand and test the new Google Colab MCP server, plus a playful "real" notebook project to see how well an agent can drive Colab end-to-end.
+This folder is a small sandbox to understand and test the new Google Colab MCP server, plus a playful  notebook project to see how well an agent can drive Colab end-to-end.
 
 ## What is the "Colab MCP" (Google)?
 
