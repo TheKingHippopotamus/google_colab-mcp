@@ -43,38 +43,36 @@ Prerequisites (as described by the upstream project/blog):
 
 ## The “small project test” notebook
 
-`colabMcp/SEC_EDGAR_10Q_Downloader.ipynb` is the fun test project.
+`colabMcp/Financial_Report_Analyzer.ipynb` is the main fun test project (it already produces charts/dashboards and saves output files).
 
 ### What it does
 
-It downloads all **SEC EDGAR 10-Q** filings for a configured date range by:
+It fetches and analyzes **SEC EDGAR 10-Q quarterly financial reports** and then visualizes the results.
 
-1. Using the **SEC EDGAR Full-Text Search API (EFTS)** to enumerate matching filings
-2. For each match, downloading the primary filing HTML document
-3. Saving the HTML + a `metadata.json` sidecar into a consistent folder structure
+High-level flow:
 
-Later cells render some additional dashboards/visuals (dark-themed plots) based on the collected/processed data.
+1. Searches for a company (by name or ticker) to get the required `CIK`
+2. Retrieves the company’s most recent 10-Qs
+3. Extracts key financial metrics (revenue, net income, assets, etc.)
+4. Builds trend charts
+5. Produces a dark-themed, 4-panel dashboard (radar + scores + risk landscape + outlook)
 
-### Files/folders it outputs
+### Outputs it saves (so you can “see results”)
 
-The notebook is designed to save into:
+Running the notebook writes files into the Colab `/content` folder, including:
 
+```text
+/content/{TICKER}_10Q_financial_data.csv
+/content/{TICKER}_ai_dashboard.png
+/content/comparison_dashboard.png
 ```
-/content/data/tickers/<TICKER>/<YYYY-MM-DD>/reports/10Q-<ticker>-<accession>.html
-/content/data/tickers/<TICKER>/<YYYY-MM-DD>/reports/metadata.json
-```
-
-It also supports idempotent re-runs by skipping downloads when `metadata.json` already exists.
 
 ### How to run it (in Colab)
 
-1. Open `SEC_EDGAR_10Q_Downloader.ipynb` in Google Colab
-2. In **Cell 2**, set `SEC_USER_AGENT` to something like:
-   - `"CompanyName admin@yourdomain.com"`
-3. (Optional) Change `START_DATE` / `END_DATE`
+1. Open `Financial_Report_Analyzer.ipynb` in Google Colab
+2. Edit the company inputs in the notebook (for example `SEARCH_QUERY` and the selected company index)
+3. Make sure the SEC `User-Agent` header is set to your real name/email (there is a placeholder in the code)
 4. Run cells from top to bottom
-
-Because the SEC requires a descriptive `User-Agent`, leaving the placeholder value can lead to blocks or rate limiting.
 
 ## Packages used (quick list)
 
@@ -87,6 +85,10 @@ Because the SEC requires a descriptive `User-Agent`, leaving the placeholder val
 
 ## Why this exists 
 
-This is intentionally for fun: it’s a practical way to verify the Colab MCP server can drive a non-trivial notebook workflow—install dependencies, execute Python, and produce real artifacts—without manual copy/paste between local tooling and Colab. 
+This is intentionally for fun: it’s a practical way to verify the Colab MCP server can drive a non-trivial notebook workflow—install dependencies, execute Python, and produce real artifacts—without manual copy/paste between local tooling and Colab.
+
+## Optional: bulk downloader
+
+If you also want to “collect raw filings” first, see `colabMcp/SEC_EDGAR_10Q_Downloader.ipynb`, which downloads 10-Q HTML + `metadata.json` into a structured folder under `/content/data/tickers/...`.
 
 ### All Rights Reserved - TheKingHippopotamus - 2026 
